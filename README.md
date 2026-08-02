@@ -2,6 +2,8 @@
 
 A small setup script for Omarchy and Hyprland that adds a Neovim cheatsheet launcher and convenient keyboard shortcuts.
 
+![Neovim cheatsheet screenshot](https://i.redd.it/3yblupqp51eh1.png)
+
 ## What it does
 
 The script:
