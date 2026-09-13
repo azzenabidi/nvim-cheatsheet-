@@ -2,10 +2,13 @@
 
 # Omarchy Neovim Keybindings Setup
 # Adds SUPER N → Neovim Cheatsheet, SUPER E → Neovim
+#
+# Omarchy configures Hyprland in Lua (bindings.lua, o.bind/hl.unbind) and
+# uses the Omarchy menu (omarchy menu select) as the native dmenu.
 
 set -e
 
-BINDINGS_FILE="$HOME/.config/hypr/bindings.conf"
+BINDINGS_FILE="$HOME/.config/hypr/bindings.lua"
 CHEATSHEET_SCRIPT="$HOME/.local/bin/neovim-cheatsheet"
 
 # Ensure ~/.local/bin exists and is in PATH
@@ -54,7 +57,7 @@ printf '%s\n' \
 ":split                                      → Split horizontally" \
 "Ctrl+w                                      → Switch window split" \
 ":term                                       → Open terminal" \
-| walker --dmenu -p 'Neovim Keybindings' --width 800 --height 600
+| omarchy menu select 'Neovim Keybindings' -- --width 800 --maxheight 600
 SCRIPT
 
 chmod +x "$CHEATSHEET_SCRIPT"
@@ -62,19 +65,20 @@ chmod +x "$CHEATSHEET_SCRIPT"
 # Backup bindings file
 cp "$BINDINGS_FILE" "$BINDINGS_FILE.bak.$(date +%s)"
 
-# Remove existing SUPER N and SUPER E bindings if present (lines starting with bind that contain ", N," or ", E,")
-sed -i '/^bindd.*SUPER, N,/d' "$BINDINGS_FILE"
-sed -i '/^bindd.*SUPER, E,/d' "$BINDINGS_FILE"
+# Remove existing SUPER N and SUPER E bindings if present
+sed -i '/^o\.bind("SUPER + N"/Id' "$BINDINGS_FILE"
+sed -i '/^o\.bind("SUPER + E"/Id' "$BINDINGS_FILE"
 
 # Add new bindings
 sed -i '$a\
-# Neovim Cheatsheet on SUPER N\
-bindd = SUPER, N, Neovim Cheatsheet, exec, neovim-cheatsheet\
-# Neovim on SUPER E\
-bindd = SUPER, E, Neovim, exec, uwsm-app -- xdg-terminal-exec nvim' "$BINDINGS_FILE"
+-- Neovim Cheatsheet on SUPER N\
+o.bind("SUPER + N", "Neovim Cheatsheet", "neovim-cheatsheet")\
+-- Neovim on SUPER E\
+o.bind("SUPER + E", "Neovim", "uwsm-app -- xdg-terminal-exec nvim")' "$BINDINGS_FILE"
 
-# Reload hyprland
+# Reload and validate Hyprland
 hyprctl reload
+hyprctl configerrors
 
 echo "Done! Bindings:"
 echo "  SUPER N          → Neovim Cheatsheet"
