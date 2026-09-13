@@ -1,6 +1,6 @@
 # nvim-cheatsheet-
 
-A small setup script for Omarchy and Hyprland that adds a Neovim cheatsheet launcher and convenient keyboard shortcuts.
+A small setup script for Omarchy 4 and Hyprland that adds a Neovim cheatsheet launcher and convenient keyboard shortcuts.
 
 ![Neovim cheatsheet screenshot](https://i.redd.it/3yblupqp51eh1.png)
 
@@ -17,7 +17,7 @@ The script:
 
 ## Requirements
 
-- Omarchy 3 or another Hyprland-based setup (<= 0.56)
+- Omarchy 3 or another Hyprland-based setup ( > 0.56)
 - bash
 - walker (for the dmenu-style launcher popup)
 
